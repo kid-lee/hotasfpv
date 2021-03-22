@@ -100,8 +100,8 @@ if __name__ == "__main__":
 
    pi.wave_tx_stop() # Start with a clean slate.
 
-   ppm = PPM.X(pi, 3, frame_ms=20)
-
+   #ppm = PPM.X(pi, 3, frame_ms=20)
+   ppm = PPM.X(pi, 3)
    updates = 0
    start = time.time()
    for chan in range(8):
@@ -111,7 +111,7 @@ if __name__ == "__main__":
    end = time.time()
    secs = end - start
    print("{} updates in {:.1f} seconds ({}/s)".format(updates, secs, int(updates/secs)))
-
+   
    ppm.update_channels([1000, 2000, 1000, 2000, 1000, 2000, 1000, 2000])
 
    time.sleep(2)
