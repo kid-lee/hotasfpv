@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
    pi.wave_tx_stop() # Start with a clean slate.
 
-   ppm = PPM.X(pi, 6, frame_ms=20)
+   ppm = PPM.X(pi, 3, frame_ms=20)
 
    updates = 0
    start = time.time()
