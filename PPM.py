@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 # PPM.py
-# 2016-02-18
+# 2016-02-19
 # Public Domain
 
 import time
-import pigpio
+import pigpio # http://abyz.me.uk/rpi/pigpio/python.html
 
 class X:
 
-   GAP=100
+   GAP=300
    WAVES=3
 
    def __init__(self, pi, gpio, channels=8, frame_ms=27):
@@ -47,10 +47,12 @@ class X:
       wf =[]
       micros = 0
       for i in self._widths:
-         wf.append(pigpio.pulse(0, 1<<self.gpio, self.GAP))
-         wf.append(pigpio.pulse(1<<self.gpio, 0, i))
-         micros += (i+self.GAP)
+         wf.append(pigpio.pulse(1<<self.gpio, 0, self.GAP))
+         wf.append(pigpio.pulse(0, 1<<self.gpio, i-self.GAP))
+         micros += i
       # off for the remaining frame period
+      wf.append(pigpio.pulse(1<<self.gpio, 0, self.GAP))
+      micros += self.GAP
       wf.append(pigpio.pulse(0, 1<<self.gpio, self._frame_us-micros))
 
       self.pi.wave_add_generic(wf)
@@ -100,8 +102,8 @@ if __name__ == "__main__":
 
    pi.wave_tx_stop() # Start with a clean slate.
 
-   #ppm = PPM.X(pi, 3, frame_ms=20)
-   ppm = PPM.X(pi, 3)
+   ppm = PPM.X(pi, 4, frame_ms=20)
+
    updates = 0
    start = time.time()
    for chan in range(8):
@@ -111,7 +113,7 @@ if __name__ == "__main__":
    end = time.time()
    secs = end - start
    print("{} updates in {:.1f} seconds ({}/s)".format(updates, secs, int(updates/secs)))
-   
+
    ppm.update_channels([1000, 2000, 1000, 2000, 1000, 2000, 1000, 2000])
 
    time.sleep(2)
