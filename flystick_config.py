@@ -7,6 +7,9 @@ bonus - it had just the throttle lever I wanted.
 from flystick_conf_models import *
 
 stick = Joystick(0)
+throttle = Joystick(1)
+rudder = Joystick(2)
+
 
 # aileron trim, hat side-to-side axis
 ail_trim = stick.hat_switch(hat=0, axis=0, positions=41, initial=20)
@@ -26,9 +29,9 @@ CHANNELS = (
     # channel 2: elevator (reversed)
     -stick.axis(1),
     # channel 3: throttle (reversed)
-    -stick.axis(3),
+    -throttle.axis(2),
     # channel 4: yaw
-    stick.axis(2),
+    rudder.axis(2),
     #channal 5 ARM
     stick.button(6),
     # Channel 6 flight mode
